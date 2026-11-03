@@ -65,7 +65,33 @@
       返回首頁
     </a>
   </div>
+  <script>
+  async function loadPlasticData() {
 
+    // 讀取 SVG 檔案
+    const response = await fetch("常見塑膠材質編號1.svg");
+    const svgText = await response.text();
+
+    // 將 SVG 文字轉換成可讀取的文件
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+
+    // 找出所有含有 desc 說明的連結物件
+    const items = svgDoc.querySelectorAll("a");
+
+    items.forEach(item => {
+      const desc = item.querySelector("desc");
+
+      if (desc) {
+        console.log("材料說明：", desc.textContent.trim());
+      }
+    });
+  }
+
+// 網頁載入後執行
+loadPlasticData();
+</script>
+  
 </body>
 </html>
  
