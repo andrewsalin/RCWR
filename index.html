@@ -100,80 +100,10 @@
 
     <h3>遊戲玩法說明</h3>
     <p>認識七種常見塑膠材質後，來挑戰你的環保知識吧！</p>
-
-    <p>遊戲規則:</p>
-    <ul>
-      <li>總共 10 道選擇題。</li>
-      <li>每題答對可得 10 分。</li>
-      <li>每題作答後立即顯示答案與解說。</li>
-      <li>完成全部題目後，顯示闖關總成績。</li>
-    </ul>
-
-    <hr>
-
-    <h3>開始挑戰</h3>
-    <div id="quiz">
-
-      <h4>第 1 題：認識塑膠編號</h4>
-
-      <p>塑膠編號 1 號代表哪一種材質？</p>
-
-      <label>
-        <input type="radio" name="q1" value="A">
-        A. 聚丙烯（PP）
-      </label>
-      <br>
-
-      <label>
-        <input type="radio" name="q1" value="B">
-        B. 聚對苯二甲酸乙二酯（PET）
-      </label>
-      <br>
-
-      <label>
-        <input type="radio" name="q1" value="C">
-        C. 聚苯乙烯（PS）
-      </label>
-      <br>
-
-      <label>
-        <input type="radio" name="q1" value="D">
-        D. 聚氯乙烯（PVC）
-      </label>
-      <br><br>
-
-      <button onclick="checkAnswer()">確認答案</button>
-
-      <p id="result"></p>
-
-    </div>
-
-    <script>
-    function checkAnswer() {
-
-      const selected = document.querySelector(
-        'input[name="q1"]:checked'
-      );
-
-      const result = document.getElementById("result");
-
-      if (!selected) {
-        result.textContent = "請先選擇一個答案！";
-        return;
-      }
-
-      if (selected.value === "B") {
-        result.textContent =
-           "答對了！PET 是塑膠編號 1，常見於飲料瓶等產品。";
-        result.style.color = "green";
-      } else {
-        result.textContent =
-          "再加油！正確答案是 B：PET（聚對苯二甲酸乙二酯）。";
-        result.style.color = "red";
-      }
-
-  }
-</script>
+    <p>共五題，答題後立即顯示正確答案及材料說明，
+     不計分，作為個人學習後測驗。</p>
+    
+    <p><a href="quiz.html">開始塑膠材料知識測驗</a></p>
 
     <p><a href="#top">↑ 回到頁首</a></p>
   </section>
