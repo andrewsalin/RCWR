@@ -106,7 +106,7 @@
         plastics.push({
           number: number,
           name: name,
-          description: desc.textContent.trim()
+          description: String(desc.textContent || "").trim()
         });
 
       } else {
