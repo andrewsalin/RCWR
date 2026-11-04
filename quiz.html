@@ -97,6 +97,9 @@
 
       const textElement = item.querySelector("text");
       const name = textElement?.textContent?.replace(/\s+/g, "").trim();
+      
+      console.log("清理後的名稱：", JSON.stringify(name));
+      console.log("對照表是否找到：", numberMap[name]);
 
       if (desc && name) {
 
