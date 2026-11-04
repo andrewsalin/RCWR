@@ -76,6 +76,9 @@
     const parser = new DOMParser();
     const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
 
+    // 建立材料資料陣列
+    const plastics = [];
+
     // 找出所有含有 desc 說明的連結物件
     const items = svgDoc.querySelectorAll("a");
 
@@ -84,8 +87,17 @@
 
       if (desc) {
         console.log("材料說明：", desc.textContent.trim());
-      }
-    });
+
+        plastics.push({
+        name: name,
+        description: desc.textContent.trim()
+      });
+   }
+  });
+    
+    // 顯示整理後的材料資料
+    console.log("塑膠材料資料：", plastics);
+    console.log("材料總數：", plastics.length);
   }
 
 // 網頁載入後執行
