@@ -93,7 +93,7 @@
     };
     
     items.forEach(item => {
-      const desc = item.querySelector("text")?.textContent.trim();
+      const desc = item.querySelector("desc");
 
       const textElement = item.querySelector("text");
       const name = textElement?.textContent?.trim();
@@ -117,7 +117,7 @@
     // 顯示整理後的材料資料
     console.log("塑膠材料資料：", plastics);
     plastics.forEach((item, index) => {
-      console.log("Array[" + index + "]，塑膠編號：" + item.number +
+      console.log("Array[" + index + "]，塑膠材料編號：" + item.number +
     "，材料名稱：" + item.name);
     });
     console.log("材料總數：", plastics.length);
