@@ -95,24 +95,29 @@
     items.forEach(item => {
       const desc = item.querySelector("text")?.textContent.trim();
 
-      if (desc) {
-        const name = item.querySelector("text")?.textContent.trim();
-        
+      const textElement = item.querySelector("text");
+      const name = textElement?.textContent?.trim();
+
+      if (desc && name) {
+
         // 依照材料名稱取得真正的塑膠編號
         const number = numberMap[name];
-        
+
         plastics.push({
-        number: number,  
-        name: name,
-        description: desc.textContent.trim()
-      });
-   }
+          number: number,
+          name: name,
+          description: desc.textContent.trim()
+        });
+
+      } else {
+        console.log("略過沒有材料名稱的物件：", item);
+      }
   });
     
     // 顯示整理後的材料資料
     console.log("塑膠材料資料：", plastics);
     plastics.forEach((item, index) => {
-      console.log("Array[" + index + "]，塑膠材料編號：" + item.number +
+      console.log("Array[" + index + "]，塑膠編號：" + item.number +
     "，材料名稱：" + item.name);
     });
     console.log("材料總數：", plastics.length);
