@@ -96,7 +96,7 @@
       const desc = item.querySelector("desc");
 
       const textElement = item.querySelector("text");
-      const name = textElement?.textContent?.trim();
+      const name = textElement?.textContent?.replace(/\s+/g, "").trim();
 
       if (desc && name) {
 
