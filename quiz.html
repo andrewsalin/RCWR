@@ -81,14 +81,28 @@
 
     // 找出所有含有 desc 說明的連結物件
     const items = svgDoc.querySelectorAll("a");
-
+    // 材料名稱與塑膠編號對照表
+    const numberMap = {
+      "聚對苯二甲酸乙二酯": 1,
+      "高密度聚乙烯": 2,
+      "聚氯乙烯": 3,
+      "低密度聚乙烯": 4,
+      "聚丙烯": 5,
+      "聚苯乙烯": 6,
+      "其他": 7
+    };
+    
     items.forEach(item => {
-      const desc = item.querySelector("desc");
+      const desc = item.querySelector("text")?.textContent.trim();
 
       if (desc) {
         const name = item.querySelector("text")?.textContent.trim();
-
+        
+        // 依照材料名稱取得真正的塑膠編號
+        const number = numberMap[name];
+        
         plastics.push({
+        number: number,  
         name: name,
         description: desc.textContent.trim()
       });
@@ -98,7 +112,8 @@
     // 顯示整理後的材料資料
     console.log("塑膠材料資料：", plastics);
     plastics.forEach((item, index) => {
-      console.log("Array[" + index + "]，材料名稱：" + item.name);
+      console.log("Array[" + index + "]，塑膠材料編號：" + item.number +
+    "，材料名稱：" + item.name);
     });
     console.log("材料總數：", plastics.length);
   }
