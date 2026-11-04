@@ -97,6 +97,9 @@
     
     // 顯示整理後的材料資料
     console.log("塑膠材料資料：", plastics);
+    plastics.forEach((item, index) => {
+      console.log("Array[" + index + "]，材料名稱：" + item.name);
+    });
     console.log("材料總數：", plastics.length);
   }
 
