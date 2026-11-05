@@ -50,7 +50,10 @@
 
 <body>
 
-  <div class="quiz-container">
+  <div class="quiz-container"> 
+
+    <!-- 歡迎畫面 -->
+    <div id="welcome-screen">
     <h1>塑膠材料知識闖關測驗</h1>
 
     <p>歡迎來到塑膠材料知識測驗！</p>
@@ -61,10 +64,31 @@
     <p>本測驗共五題，不計分，</p>
     <p>每題作答後都會顯示正確答案與材料說明。</p>
 
+    <button id="start-button">開始測驗</button>  
+
+    <br><br>  
     <a href="index.html" class="home-button">
       返回首頁
     </a>
   </div>
+
+ <!-- 測驗畫面 -->
+  <div id="question-screen" style="display:none;">
+
+    <h2 id="question-number">第 1 題 / 共 5 題</h2>
+
+    <p id="question-text">請問下列哪一項是正確答案？</p>
+
+    <div id="options-container">
+      <!-- 四個選項將由 JavaScript 自動產生 -->
+    </div>
+
+    <div id="answer-feedback"></div>
+
+  </div>
+
+</div> 
+    
   <script>
   async function loadPlasticData() {
 
