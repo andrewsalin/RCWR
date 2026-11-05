@@ -96,17 +96,15 @@
       const desc = item.querySelector("desc");
 
       const textElement = item.querySelector("text");
-      const name = textElement?.textContent?.replace(/\s+/g, "").trim();
+      const name = textElement?.textContent?.replace(/[\s\u3000]+/g, "").trim();
       
-      console.log("清理後的名稱：", JSON.stringify(name));
-      console.log("對照表是否找到：", numberMap[name]);
-
       if (desc && name) {
 
         // 依照材料名稱取得真正的塑膠編號
         const number = numberMap[name];
-        console.log("材料名稱原始內容：", JSON.stringify(name));
-
+        console.log("清理後的名稱：", JSON.stringify(name));
+        console.log("取得的編號：", number);
+        
         plastics.push({
           number: number,
           name: name,
