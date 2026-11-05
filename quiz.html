@@ -138,11 +138,40 @@
     // 顯示本次抽出的五種材料
     console.log("本次隨機抽出的五題：", selectedPlastics);
 
-    selectedPlastics.forEach((item, index) => {
-      console.log("第 " + (index + 1) + " 題：" +
-        item.number + " - " + item.name);
-    });
-   }
+   selectedPlastics.forEach((item, index) => {
+
+  // 找出其他六種材料（排除正確答案）
+  const otherOptions = plastics.filter(
+    plastic => plastic.number !== item.number
+  );
+
+  // 正確答案加上三個干擾選項
+  const options = [
+    item,
+    ...otherOptions.slice(0, 3)
+  ];
+
+  // 將四個選項隨機排列
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+
+  // 顯示測試結果
+  console.log("第 " + (index + 1) + " 題");
+  console.log("正確答案：", item.name);
+  console.log("四個選項：");
+
+  options.forEach((option, optionIndex) => {
+    console.log(
+      String.fromCharCode(65 + optionIndex) + ". " +
+      option.name
+    );
+  });
+
+ });
+ }
 
 // 網頁載入後執行
 loadPlasticData();
