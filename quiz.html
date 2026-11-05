@@ -123,7 +123,26 @@
     "，材料名稱：" + item.name);
     });
     console.log("材料總數：", plastics.length);
-  }
+    // 隨機打亂七種材料的順序
+    const shuffled = [...plastics];
+
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    // 取出前五種，作為本次測驗題目
+    const selectedPlastics = shuffled.slice(0, 5);
+
+    // 顯示本次抽出的五種材料
+    console.log("本次隨機抽出的五題：", selectedPlastics);
+
+    selectedPlastics.forEach((item, index) => {
+      console.log("第 " + (index + 1) + " 題：" +
+        item.number + " - " + item.name);
+    });
+   }
 
 // 網頁載入後執行
 loadPlasticData();
