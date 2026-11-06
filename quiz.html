@@ -161,8 +161,28 @@
 
     // 顯示本次抽出的五種材料
     console.log("本次隨機抽出的五題：", selectedPlastics);
+    
+    // 按下開始測驗按鈕
+const startButton = document.getElementById("start-button");
 
-   selectedPlastics.forEach((item, index) => {
+startButton.addEventListener("click", function() {
+
+  // 隱藏歡迎畫面
+  document.getElementById("welcome-screen").style.display = "none";
+
+  // 顯示測驗畫面
+  document.getElementById("question-screen").style.display = "block";
+
+  // 顯示第一題題目
+  document.getElementById("question-number").textContent = "第 1 題 / 共 5 題";
+
+  document.getElementById("question-text").textContent =
+    "塑膠回收標誌編號 " + selectedPlastics[0].number +
+    " 代表哪一種材料？";
+
+});
+
+  selectedPlastics.forEach((item, index) => {
 
   // 找出其他六種材料（排除正確答案）
   const otherOptions = plastics.filter(
