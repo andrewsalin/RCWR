@@ -179,6 +179,48 @@ startButton.addEventListener("click", function() {
   document.getElementById("question-text").textContent =
     "塑膠回收標誌編號 " + selectedPlastics[0].number +
     " 代表哪一種材料？";
+  // 取得本題正確答案
+const currentQuestion = selectedPlastics[0];
+
+// 找出其他六種材料
+const otherOptions = plastics.filter(
+  plastic => plastic.number !== currentQuestion.number
+);
+
+// 隨機打亂其他六種材料
+for (let i = otherOptions.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [otherOptions[i], otherOptions[j]] =
+    [otherOptions[j], otherOptions[i]];
+}
+
+// 正確答案加上三個干擾選項
+const options = [
+  currentQuestion,
+  ...otherOptions.slice(0, 3)
+];
+
+// 再將四個選項隨機排列
+for (let i = options.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [options[i], options[j]] = [options[j], options[i]];
+}
+
+// 找到網頁上的選項區域
+const container = document.getElementById("options-container");
+
+// 清除原有選項
+container.textContent = "";
+
+// 建立四個選項按鈕
+options.forEach((option, index) => {
+  const button = document.createElement("button");
+
+  button.textContent =
+    String.fromCharCode(65 + index) + ". " + option.name;
+
+  container.appendChild(button);
+});
 
 });
 
