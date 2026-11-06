@@ -241,7 +241,14 @@ button.addEventListener("click", function() {
   // 顯示材料說明
   feedback.textContent +=
     "\n材料說明：" + currentQuestion.description;
+  
+  // 顯示下一題按鈕
+  document.getElementById("next-button").style.display = "block";
 
+  // 暫時鎖定四個選項，避免重複作答
+  container.querySelectorAll("button").forEach(btn => {
+    btn.disabled = true;
+});
 });  
   container.appendChild(button);
 });
