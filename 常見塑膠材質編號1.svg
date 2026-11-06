@@ -7,7 +7,7 @@
    width="1283"
    height="638"
    viewBox="0 0 1283 638"
-   sodipodi:docname="常見塑膠材質編號JavaTest1.svg"
+   sodipodi:docname="常見塑膠材質編號1.svg"
    inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
    xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -366,21 +366,13 @@
      y="326.64072"
      id="text34"><tspan
        sodipodi:role="line"
-       id="tspan82"
-       x="762.2124"
-       y="326.64072">微波餐盒</tspan><tspan
+       id="tspan15">微波餐盒</tspan><tspan
        sodipodi:role="line"
-       id="tspan83"
-       x="762.2124"
-       y="368.95105"> 優格杯</tspan><tspan
+       id="tspan16"> 優格杯</tspan><tspan
        sodipodi:role="line"
-       id="tspan84"
-       x="762.2124"
-       y="411.26135"> 布丁杯</tspan><tspan
+       id="tspan43"> 布丁杯</tspan><tspan
        sodipodi:role="line"
-       id="tspan85"
-       x="762.2124"
-       y="453.57169">桶裝酒精</tspan></text><text
+       id="tspan44">瓶裝酒精</tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:32.0037px;line-height:1.25;font-family:Sans;-inkscape-font-specification:'Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
      x="918.80511"
@@ -661,29 +653,36 @@
      inkscape:transform-center-y="-13.413698" /></g>
 
 <!-- 七種材質共用提示框 -->
-<g id="common-tooltip" visibility="hidden" pointer-events="none">
+<g
+   id="common-tooltip"
+   visibility="hidden"
+   pointer-events="none">
   <rect
-    id="tooltip-bg"
-    x="780" y="300"
-    width="420" height="100"
-    rx="12"
-    fill="#fff8d8"
-    stroke="#806b35"
-    stroke-width="2" />
+   id="tooltip-bg"
+   x="780"
+   y="300"
+   width="420"
+   height="100"
+   rx="12"
+   fill="#fff8d8"
+   stroke="#806b35"
+   stroke-width="2" />
    <text
-    id="tooltip-text"
-    x="800"
-    y="330"
-    font-family="Microsoft JhengHei, sans-serif"
-    font-size="17"
-    fill="#333333">
+   id="tooltip-text"
+   x="800"
+   y="330"
+   font-family="Microsoft JhengHei, sans-serif"
+   font-size="17"
+   fill="#333333">
    </text>
 
 </g>
 
 
 <!-- 七種材質共用 Tooltip 模組 -->
-<script type="application/ecmascript"><![CDATA[
+<script
+   type="application/ecmascript"
+   id="script1"><![CDATA[
 (function () {
 
   var tip = document.getElementById("common-tooltip");
