@@ -218,7 +218,29 @@ options.forEach((option, index) => {
 
   button.textContent =
     String.fromCharCode(65 + index) + ". " + option.name;
+// 點選選項後，判斷答案是否正確
+button.addEventListener("click", function() {
 
+  const feedback = document.getElementById("answer-feedback");
+
+  if (option.number === currentQuestion.number) {
+
+    feedback.textContent = "答對了！";
+
+  } else {
+
+    feedback.textContent = "答錯了！";
+  }
+
+  // 顯示正確答案
+  feedback.textContent +=
+    "\n正確答案：" + currentQuestion.name;
+
+  // 顯示材料說明
+  feedback.textContent +=
+    "\n材料說明：" + currentQuestion.description;
+
+});  
   container.appendChild(button);
 });
 
