@@ -92,206 +92,242 @@
 </div> 
     
   <script>
-  async function loadPlasticData() {
+async function loadPlasticData() {
 
-    // 讀取 SVG 檔案
-    const response = await fetch("常見塑膠材質編號1.svg");
-    const svgText = await response.text();
+  // 讀取 SVG 檔案
+  const response = await fetch("常見塑膠材質編號1.svg");
 
-    // 將 SVG 文字轉換成可讀取的文件
-    const parser = new DOMParser();
-    const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+  if (!response.ok) {
+    throw new Error("無法讀取 SVG 檔案");
+  }
 
-    // 建立材料資料陣列
-    const plastics = [];
+  const svgText = await response.text();
 
-    // 找出所有含有 desc 說明的連結物件
-    const items = svgDoc.querySelectorAll("a");
-    // 材料名稱與塑膠編號對照表
-    const numberMap = {
-      "聚對苯二甲酸乙二酯": 1,
-      "高密度聚乙烯": 2,
-      "聚氯乙烯": 3,
-      "低密度聚乙烯": 4,
-      "聚丙烯": 5,
-      "聚苯乙烯": 6,
-      "其他": 7
-    };
-    
-    items.forEach(item => {
-      const desc = item.querySelector("desc");
+  // 將 SVG 文字轉換成可讀取的文件
+  const parser = new DOMParser();
+  const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
 
-      const textElement = item.querySelector("text");
-      const name = textElement?.textContent?.replace(/[\s\u3000]+/g, "").trim();
-      
-      if (desc && name) {
+  // 建立材料資料陣列
+  const plastics = [];
 
-        // 依照材料名稱取得真正的塑膠編號
-        const number = numberMap[name];
-        console.log("清理後的名稱：", JSON.stringify(name));
-        console.log("取得的編號：", number);
-        
+  const items = svgDoc.querySelectorAll("a");
+
+  // 材料名稱與塑膠編號對照表
+  const numberMap = {
+    "聚對苯二甲酸乙二酯": 1,
+    "高密度聚乙烯": 2,
+    "聚氯乙烯": 3,
+    "低密度聚乙烯": 4,
+    "聚丙烯": 5,
+    "聚苯乙烯": 6,
+    "其他": 7
+  };
+
+  items.forEach(item => {
+
+    const desc = item.querySelector("desc");
+    const textElement = item.querySelector("text");
+
+    const name = textElement?.textContent
+      ?.replace(/[\s\u3000]+/g, "").trim();
+
+    if (desc && name) {
+
+      const number = numberMap[name];
+
+      if (number !== undefined) {
         plastics.push({
           number: number,
           name: name,
           description: String(desc.textContent || "").trim()
         });
-
-      } else {
-        console.log("略過沒有材料名稱的物件：", item);
       }
+    }
   });
-    
-    // 顯示整理後的材料資料
-    console.log("塑膠材料資料：", plastics);
-    plastics.forEach((item, index) => {
-      console.log("Array[" + index + "]，塑膠材料編號：" + item.number +
-    "，材料名稱：" + item.name);
-    });
-    console.log("材料總數：", plastics.length);
-    // 隨機打亂七種材料的順序
-    const shuffled = [...plastics];
 
-    for (let i = shuffled.length - 1; i > 0; i--) {
+  console.log("塑膠材料資料：", plastics);
+  console.log("材料總數：", plastics.length);
+
+  // 確認至少有七種材料
+  if (plastics.length < 7) {
+    alert("SVG 材料資料不足，請檢查 SVG 檔案。");
+    return;
+  }
+
+  // 隨機打亂陣列的共用函數
+  function shuffle(array) {
+
+    for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
 
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      [array[i], array[j]] = [array[j], array[i]];
     }
 
-    // 取出前五種，作為本次測驗題目
-    const selectedPlastics = shuffled.slice(0, 5);
+    return array;
+  }
 
-    // 顯示本次抽出的五種材料
-    console.log("本次隨機抽出的五題：", selectedPlastics);
-    
-    // 按下開始測驗按鈕
-const startButton = document.getElementById("start-button");
+  // 隨機抽出五種材料，不重複
+  const selectedPlastics = shuffle([...plastics]).slice(0, 5);
 
-startButton.addEventListener("click", function() {
+  console.log("本次隨機抽出的五題：", selectedPlastics);
 
-  // 隱藏歡迎畫面
-  document.getElementById("welcome-screen").style.display = "none";
+  // 目前題目索引，從 0 開始
+  let currentIndex = 0;
 
-  // 顯示測驗畫面
-  document.getElementById("question-screen").style.display = "block";
-
-  // 顯示第一題題目
-  document.getElementById("question-number").textContent = "第 1 題 / 共 5 題";
-
-  document.getElementById("question-text").textContent =
-    "塑膠回收標誌編號 " + selectedPlastics[0].number +
-    " 代表哪一種材料？";
-  // 取得本題正確答案
-const currentQuestion = selectedPlastics[0];
-
-// 找出其他六種材料
-const otherOptions = plastics.filter(
-  plastic => plastic.number !== currentQuestion.number
-);
-
-// 隨機打亂其他六種材料
-for (let i = otherOptions.length - 1; i > 0; i--) {
-  const j = Math.floor(Math.random() * (i + 1));
-  [otherOptions[i], otherOptions[j]] =
-    [otherOptions[j], otherOptions[i]];
-}
-
-// 正確答案加上三個干擾選項
-const options = [
-  currentQuestion,
-  ...otherOptions.slice(0, 3)
-];
-
-// 再將四個選項隨機排列
-for (let i = options.length - 1; i > 0; i--) {
-  const j = Math.floor(Math.random() * (i + 1));
-  [options[i], options[j]] = [options[j], options[i]];
-}
-
-// 找到網頁上的選項區域
-const container = document.getElementById("options-container");
-
-// 清除原有選項
-container.textContent = "";
-
-// 建立四個選項按鈕
-options.forEach((option, index) => {
-  const button = document.createElement("button");
-
-  button.textContent =
-    String.fromCharCode(65 + index) + ". " + option.name;
-// 點選選項後，判斷答案是否正確
-button.addEventListener("click", function() {
-
+  // 取得網頁上的元素
+  const startButton = document.getElementById("start-button");
+  const nextButton = document.getElementById("next-button");
+  const container = document.getElementById("options-container");
   const feedback = document.getElementById("answer-feedback");
 
-  if (option.number === currentQuestion.number) {
+  // 顯示指定題目
+  function showQuestion() {
 
-    feedback.textContent = "答對了！";
+    const currentQuestion = selectedPlastics[currentIndex];
 
-  } else {
+    // 顯示題目編號
+    document.getElementById("question-number").textContent =
+      "第 " + (currentIndex + 1) + " 題 / 共 5 題";
 
-    feedback.textContent = "答錯了！";
-  }
+    // 顯示題目
+    document.getElementById("question-text").textContent =
+      "塑膠回收標誌編號 " +
+      currentQuestion.number +
+      " 代表哪一種材料？";
 
-  // 顯示正確答案
-  feedback.textContent +=
-    "\n正確答案：" + currentQuestion.name;
+    // 清除上一題的內容
+    feedback.textContent = "";
+    container.textContent = "";
 
-  // 顯示材料說明
-  feedback.textContent +=
-    "\n材料說明：" + currentQuestion.description;
-  
-  // 顯示下一題按鈕
-  document.getElementById("next-button").style.display = "block";
+    // 隱藏下一題按鈕
+    nextButton.style.display = "none";
+    nextButton.textContent = "下一題";
 
-  // 暫時鎖定四個選項，避免重複作答
-  container.querySelectorAll("button").forEach(btn => {
-    btn.disabled = true;
-});
-});  
-  container.appendChild(button);
-});
-
-});
-
-  selectedPlastics.forEach((item, index) => {
-
-  // 找出其他六種材料（排除正確答案）
-  const otherOptions = plastics.filter(
-    plastic => plastic.number !== item.number
-  );
-
-  // 正確答案加上三個干擾選項
-  const options = [
-    item,
-    ...otherOptions.slice(0, 3)
-  ];
-
-  // 將四個選項隨機排列
-  for (let i = options.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-
-    [options[i], options[j]] = [options[j], options[i]];
-  }
-
-  // 顯示測試結果
-  console.log("第 " + (index + 1) + " 題");
-  console.log("正確答案：", item.name);
-  console.log("四個選項：");
-
-  options.forEach((option, optionIndex) => {
-    console.log(
-      String.fromCharCode(65 + optionIndex) + ". " +
-      option.name
+    // 找出其他六種材料
+    const otherOptions = plastics.filter(
+      plastic => plastic.number !== currentQuestion.number
     );
+
+    // 隨機抽取三個干擾選項
+    shuffle(otherOptions);
+
+    // 正確答案加上三個干擾選項
+    const options = [
+      currentQuestion,
+      ...otherOptions.slice(0, 3)
+    ];
+
+    // 將四個選項隨機排列
+    shuffle(options);
+
+    // 建立四個選項按鈕
+    options.forEach((option, index) => {
+
+      const button = document.createElement("button");
+
+      button.textContent =
+        String.fromCharCode(65 + index) + ". " + option.name;
+
+      // 點選選項後判斷答案
+      button.addEventListener("click", function() {
+
+        if (option.number === currentQuestion.number) {
+          feedback.textContent = "答對了！";
+        } else {
+          feedback.textContent = "答錯了！";
+        }
+
+        // 顯示正確答案
+        feedback.textContent +=
+          "\n正確答案：" + currentQuestion.name;
+
+        // 顯示材料說明
+        feedback.textContent +=
+          "\n材料說明：" + currentQuestion.description;
+
+        // 鎖定所有選項
+        container.querySelectorAll("button").forEach(btn => {
+          btn.disabled = true;
+        });
+
+        // 顯示下一題按鈕
+        nextButton.style.display = "block";
+
+        // 第五題改成完成測驗
+        if (currentIndex === 4) {
+          nextButton.textContent = "完成測驗";
+        }
+
+      });
+
+      container.appendChild(button);
+
+    });
+
+    // 顯示本題資料
+    console.log("第 " + (currentIndex + 1) + " 題");
+    console.log("正確答案：", currentQuestion.name);
+    console.log("四個選項：", options);
+  }
+
+  // 按下開始測驗
+  startButton.addEventListener("click", function() {
+
+    document.getElementById("welcome-screen").style.display = "none";
+
+    document.getElementById("question-screen").style.display = "block";
+
+    currentIndex = 0;
+
+    showQuestion();
+
   });
 
- });
- }
+  // 按下下一題或完成測驗
+  nextButton.addEventListener("click", function() {
+
+    if (currentIndex < 4) {
+
+      // 進入下一題
+      currentIndex++;
+
+      showQuestion();
+
+    } else {
+
+      // 五題全部完成
+      document.getElementById("question-number").textContent =
+        "測驗完成";
+
+      document.getElementById("question-text").textContent =
+        "恭喜您完成五題測驗！";
+
+      container.textContent = "";
+      feedback.textContent = "";
+
+      nextButton.style.display = "none";
+
+      // 建立返回首頁連結
+      const homeLink = document.createElement("a");
+
+      homeLink.href = "index.html";
+      homeLink.textContent = "返回首頁";
+      homeLink.className = "home-button";
+
+      document.getElementById("question-screen").appendChild(homeLink);
+
+    }
+
+  });
+
+}
 
 // 網頁載入後執行
-loadPlasticData();
+loadPlasticData().catch(error => {
+  console.error("測驗資料載入失敗：", error);
+  alert("測驗資料載入失敗，請檢查 SVG 檔案及網頁伺服器。");
+});
+
 </script>
   
 </body>
