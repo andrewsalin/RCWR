@@ -43,19 +43,23 @@
     #question-text {
       white-space: pre-line;
     }
-
+  
+    /* 產品圖片的固定顯示區域 */
     #product-image-container {
-      margin: 12px auto;
-      min-height: 10px;
+       width: 100%;
+       max-width: 360px;
+       aspect-ratio: 4 / 3;
+       margin: 12px auto;
+
+       display: flex;
+       align-items: center;
+       justify-content: center;
     }
 
+    /* 圖片維持原始比例 */  
     #product-image-container img {
-      display: block;
-      max-width: 100%;
-      max-height: 300px;
-      width: auto;
-      height: auto;
-      margin: 0 auto;
+      width:100%;
+      height:100%;
       object-fit: contain;
     }
 
@@ -327,9 +331,43 @@
       // --------------------------------------------------
       // 第二階段 A 型：單項產品判斷
       // --------------------------------------------------
+      // A 型：跨次測驗平均輪替產品，盡量避免某些產品一直重複出現
+      function getBalancedAQuestions() {
+        const storageKey = "RCWR_modeA_product_deck_v1";
+        const getKey = product => product.id || product.name;
+
+        try {
+          // 讀取上次尚未輪到的產品清單
+          let deck = JSON.parse(localStorage.getItem(storageKey) || "[]");
+          const productMap = new Map(products.map(product => [getKey(product), product]));
+
+          // 移除資料庫已不存在的產品，以及重複項目
+          deck = [...new Set(deck)].filter(key => productMap.has(key));
+
+          // 先從舊清單取題；不足 10 題時，再從未選中的產品補足
+          const selectedKeys = deck.splice(0, Math.min(10, deck.length));
+          if (selectedKeys.length < 10) {
+            const remaining = shuffle(
+              products.filter(product => !selectedKeys.includes(getKey(product)))
+            );
+            const needed = 10 - selectedKeys.length;
+            selectedKeys.push(...remaining.slice(0, needed).map(getKey));
+            deck = remaining.slice(needed).map(getKey);
+          }
+
+          // 儲存下次尚未輪到的產品
+          localStorage.setItem(storageKey, JSON.stringify(deck));
+          return selectedKeys.map(key => productMap.get(key));
+        } catch (error) {
+          // 若瀏覽器不允許使用 localStorage，仍可正常隨機出題
+          console.warn("無法保存 A 型輪替紀錄，改用一般隨機抽題。", error);
+          return shuffle([...products]).slice(0, 10);
+        }
+      }
+
       function startModeA() {
         quizMode = "modeA";
-        selectedQuestions = shuffle([...products]).slice(0, 10);
+        selectedQuestions = getBalancedAQuestions();
         prepareQuestionScreen();
       }
 
@@ -339,10 +377,40 @@
       function startModeC() {
         quizMode = "modeC";
 
-        // 每一題隨機抽出四項不同產品
-        selectedQuestions = Array.from({ length: 10 }, () =>
-          shuffle([...products]).slice(0, 4)
+        // 先建立 10 題，再將產品盡量平均分配到 40 個題目位置
+        // 同一題內不會出現重複產品；每次測驗的分配順序都會重新洗牌
+        const questionCount = 10;
+        const productsPerQuestion = 4;
+        selectedQuestions = Array.from(
+          { length: questionCount }, () => []
         );
+
+        let assignedCount = 0;
+        let startQuestion = 0;
+
+        while (assignedCount < questionCount * productsPerQuestion) {
+          const shuffledProducts = shuffle([...products]);
+
+          for (const product of shuffledProducts) {
+            if (assignedCount >= questionCount * productsPerQuestion) break;
+
+            // 從不同題目依序尋找空位，避免同一題重複出現同一產品
+            for (let offset = 0; offset < questionCount; offset++) {
+              const questionIndex = (startQuestion + offset) % questionCount;
+              const question = selectedQuestions[questionIndex];
+
+              if (
+                question.length < productsPerQuestion &&
+                !question.some(item => item.id === product.id && item.name === product.name)
+              ) {
+                question.push(product);
+                assignedCount++;
+                startQuestion = (questionIndex + 1) % questionCount;
+                break;
+              }
+            }
+          }
+        }
 
         prepareQuestionScreen();
       }
@@ -411,11 +479,14 @@
         const question = selectedQuestions[currentIndex];
 
         questionNumber.textContent =
-          "第 " + (currentIndex + 1) + " 題 / 共 10 題";
+          "第 " + (currentIndex + 1) + " 題 / 共 " +
+          selectedQuestions.length + " 題";
 
         feedback.textContent = "";
         container.textContent = "";
         productImageContainer.textContent = "";
+        // 預設隱藏圖片區，只有 A 型且該產品有圖片時才顯示
+        productImageContainer.style.display = "none";
         nextButton.style.display = "none";
         nextButton.textContent = "下一題";
 
@@ -451,6 +522,7 @@
 
           if (imagePath) {
             // 有圖片的產品：顯示圖片，不顯示產品名稱
+            productImageContainer.style.display = "flex";
             const image = document.createElement("img");
             image.src = imagePath;
             image.alt = "請辨識圖片中的日常用品";
@@ -530,7 +602,7 @@
 
             nextButton.style.display = "inline-block";
 
-            if (currentIndex === 9) {
+            if (currentIndex === selectedQuestions.length - 1) {
               nextButton.textContent = "完成測驗";
             }
           });
@@ -577,12 +649,13 @@
 
       // 下一題或完成測驗
       nextButton.addEventListener("click", function() {
-        if (currentIndex < 9) {
+        if (currentIndex < selectedQuestions.length - 1) {
           currentIndex++;
           showQuestion();
         } else {
           questionNumber.textContent = "測驗完成";
-          questionText.textContent = "恭喜您完成本階段十題測驗！";
+          questionText.textContent =
+            "恭喜您完成本階段 " + selectedQuestions.length + " 題測驗！";
           container.textContent = "";
           feedback.textContent = "";
           nextButton.style.display = "none";
