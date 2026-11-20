@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>塑膠產品的循環旅程｜六站互動示範</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px 16px 40px;
+    font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    color: #24343a; background: #f4f8f5;
+  }
+  header { max-width: 1050px; margin: 0 auto 18px; text-align: center; }
+  h1 { margin: 0 0 8px; font-size: clamp(24px, 4vw, 34px); color: #205c4a; }
+  header p { margin: 0; color: #52656a; line-height: 1.7; }
+  .note {
+    max-width: 1050px; margin: 18px auto; padding: 10px 14px;
+    background: #fff8df; border-left: 4px solid #d6a62c;
+    border-radius: 8px; font-size: 14px; line-height: 1.6;
+  }
+  .journey {
+    position: relative; max-width: 980px; height: 410px; margin: 6px auto 8px;
+    background: #fff; border: 1px solid #dce8e1; border-radius: 22px;
+    box-shadow: 0 8px 28px rgba(28,70,54,.07); overflow: hidden;
+  }
+  .ring {
+    position: absolute; width: 305px; height: 305px; left: 50%; top: 50%;
+    transform: translate(-50%,-50%); border: 5px dashed #9cc9b2;
+    border-radius: 50%; opacity: .8;
+  }
+  .center {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    width: 170px; height: 170px; min-height: 170px; padding: 12px 13px; box-sizing: border-box; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; border-radius: 50%; color: #fff;
+    background: linear-gradient(145deg,#287b63,#14513f);
+    box-shadow: 0 5px 18px rgba(20,81,63,.22); z-index: 2;
+  }
+  .center .bottle { font-size: 31px; line-height: 1; flex: 0 0 auto; }
+  .center h2 { margin: 4px 0 3px; font-size: 16px; line-height: 1.2; flex: 0 0 auto; }
+  .center p { margin: 0; font-size: 10px; line-height: 1.4; flex: 0 1 auto; }
+  .station {
+    position: absolute; z-index: 3; width: 130px; min-height: 96px;
+    padding: 8px; border: 2px solid #d7e8dd; border-radius: 16px;
+    background: #fff; text-align: center; cursor: pointer;
+    box-shadow: 0 4px 13px rgba(25,65,49,.08);
+    transition: .18s ease; color: #263b35;
+  }
+  .station:hover, .station:focus {
+    transform: translateY(-4px); border-color: #3a9673;
+    box-shadow: 0 8px 18px rgba(25,95,67,.16); outline: none;
+  }
+  .station[aria-pressed="true"] { border-color: #23815e; background: #eff9f2; }
+  .picture {
+    height: 43px; width: 100%; display: block;
+    background: #edf6ef; border-radius: 10px; margin-bottom: 7px;
+    overflow: hidden;  
+  }
+  .picture img {
+    display: block; width: 100%; height: 100%;
+    object-fit: cover; border-radius: 10px;
+  }
+  .station strong { display: block; font-size: 16px; }
+  .station small { display: block; margin-top: 3px; color: #667873; font-size: 12px; }
+  /* 六站方框順時針位置 */
+  .s1 { left: 50%; top: 5px; transform: translateX(-50%); }
+  .s1:hover,.s1:focus { transform: translate(-50%,-4px); }
+  .s2 { right: 175px; top: 70px; }
+  .s3 { right: 175px; bottom: 43px; }
+  .s4 { left: 50%; bottom: 2px; transform: translateX(-50%); }
+  .s4:hover,.s4:focus { transform: translate(-50%,-4px); }
+  .s5 { left: 175px; bottom: 43px; }
+  .s6 { left: 175px; top: 70px; }
+  .arrow {
+    position: absolute; z-index: 1; color: #338765; font-size: 35px;
+    font-weight: bold; line-height: 1;
+  }  
+   /* 箭頭位置的調整,維持原始比, 調整top:點數 */  
+  .a12 { left: calc(50% + 145px); top: 30px; transform: rotate(35deg); }
+  .a23 { left: calc(50% + 245px); top: 210px; transform: rotate(100deg); }
+  .a34 { left: calc(50% + 105px); top: 350px; transform: rotate(165deg); }
+  .a45 { left: calc(50% - 145px); top: 350px; transform: rotate(195deg); }
+  .a56 { left: calc(50% - 280px); top: 210px; transform: rotate(260deg); }
+  .a61 { left: calc(50% - 185px); top: 30px; transform: rotate(325deg); }
+  .detail {
+     width:100%; max-width: 980px; box-sizing: border-box;
+     margin: 0 auto; padding: 12px 18px;
+    background: #f0f8f2; border: 2px solid #4b9a73; border-left: 7px solid #287b55; border-radius: 14px;
+    box-shadow: 0 5px 16px rgba(28,90,60,.12);
+  }
+  .detail h2 { margin: 0 0 5px; color: #174f3b; font-size: 22px; font-weight: 800; }
+  .detail p { margin: 0; line-height: 1.6; font-size: 15px; font-weight: 600; color: #293c34; }
+  .detail .hint { margin-top: 5px !important; color: #D97706; font-size: 16px; font-weight: 500; }
+  .detail-link {
+    display: inline-block; margin-top: 10px; padding: 8px 16px;
+    color: #fff; background: #287b55; border-radius: 8px;
+    text-decoration: none; font-size: 14px; font-weight: 700;
+  }
+  .detail-link:hover, .detail-link:focus {
+    background: #14513f; text-decoration: underline; outline: 2px solid #9cc9b2;
+  }
+  .detail-link[hidden] { display: none; }
+
+  footer { max-width: 980px; margin: 18px auto 0; color: #73817b; text-align: center; font-size: 12px; }
+  @media (max-width: 700px) {
+    body { padding: 18px 10px 28px; }
+    .journey { height: auto; padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; overflow: visible; }
+    .ring,.arrow { display: none; }
+    .center { position: relative; inset: auto; transform: none; grid-column: 1 / -1;
+      width: 100%; min-height: 0; border-radius: 16px; padding: 16px; }
+    .center .bottle { font-size: 29px; }
+    .station,.s1,.s2,.s3,.s4,.s5,.s6 {
+      position: static; transform: none; width: auto; min-height: 130px; padding: 9px;
+    }
+    .station:hover,.station:focus,.s1:hover,.s1:focus,.s4:hover,.s4:focus { transform: translateY(-2px); }
+    .picture { height: 62px; font-size: 32px; }
+    .station strong { font-size: 14px; }
+    .station small { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>塑膠產品的循環旅程</h1>
+  <p><strong>從 PET 原料到再生利用，認識塑膠產品如何走過六個階段。</strong></p>
+</header>
+
+<div class="note">
+  <strong>塑膠產品的循環旅程：</strong>從 PET 原料、產品製造、日常使用，
+  分類回收、再生處理及再利用，認識 PET塑膠資源的循環過程。
+</div>
+
+<main>
+  <section class="journey" aria-label="六站環狀流程圖">
+    <div class="ring"></div>
+    <span class="arrow a12">➜</span><span class="arrow a23">➜</span>
+    <span class="arrow a34">➜</span><span class="arrow a45">➜</span>
+    <span class="arrow a56">➜</span><span class="arrow a61">➜</span>
+
+    <div class="center">
+      <div class="bottle">♻️</div>
+      <h2>PET 資源循環</h2>
+      <p>一個 PET 寶特瓶，經過回收與再生處理，有機會成為新的材料與產品。</p>
+    </div>
+
+    <button class="station s1" data-stage="0" aria-pressed="true">
+      <span class="picture"><img src="images/PET-resin-material.png" alt="PET 樹脂原料顆粒"></span><strong>① 原料</strong><small>PET 樹脂材料</small>
+    </button>
+    <button class="station s2" data-stage="1" aria-pressed="false">
+      <span class="picture"><img src="images/PET-manufacture.png" alt="使用 PET 寶特瓶製造"></span><strong>② 製造</strong><small>瓶胚與寶特瓶成形</small>
+    </button>
+    <button class="station s3" data-stage="2" aria-pressed="false">
+      <span class="picture"><img src="images/PET-use.png" alt="使用 PET 寶特瓶飲水"></span><strong>③ 使用</strong><small>裝填、販售與使用</small>
+    </button>
+    <button class="station s4" data-stage="3" aria-pressed="false">
+      <span class="picture"><img src="images/PET-RC2.png" alt="使用 PET 寶特瓶分類回收"></span><strong>④ 回收</strong><small>回收收集與分類</small>
+    </button>
+    <button class="station s5" data-stage="4" aria-pressed="false">
+      <span class="picture"><img src="images/PET-RG.png" alt="使用 PET 寶特瓶再生處理過程"></span><strong>⑤ 再生</strong><small>分選、清洗與再製</small>
+    </button>
+    <button class="station s6" data-stage="5" aria-pressed="false">
+      <span class="picture"><img src="images/rPET-use.png" alt="使用 PET 寶特瓶再生製品"></span><strong>⑥ 再利用</strong><small>再生材料製成新產品</small>
+    </button>
+  </section>
+
+  <section class="detail" aria-live="polite">
+    <h2 id="detail-title">① 原料：PET 樹脂材料</h2>
+    <p id="detail-text">PET 是聚對苯二甲酸乙二酯的簡稱。製造寶特瓶前，會先準備 PET 原料，再經過加工製成瓶胚。</p>
+    <a id="detail-link" class="detail-link" href="stage1.html">深入了解 PET 原料 →</a> 
+    <p class="hint"><strong>請點選上方任一站點的圖片或標題，這裡就會顯示該站的簡介。</strong></p>
+  </section>
+</main>
+
+<p style="text-align: center; margin: 22px auto;">
+    <a href="index.html"
+       style="display: inline-block;
+              padding: 12px 30px;
+              background-color: #288b5b;
+              color: white;
+              text-decoration: none;
+              border-radius: 9px;
+              font-size: 18px;">
+        返回首頁
+    </a>
+</p>
+
+<script>
+const stageDetails = [
+  ["① 原料：PET 樹脂材料", "PET 是聚對苯二甲酸乙二酯的簡稱。製造寶特瓶前，會先準備 PET 原料，再經過加工製成瓶胚。"],
+  ["② 製造：瓶胚與寶特瓶成形", "PET 原料經加熱與成形等製程，先製成瓶胚，再透過吹瓶等程序形成寶特瓶。不同產品的製程可能有所不同。"],
+  ["③ 使用：裝填、販售與使用", "寶特瓶裝入飲料後，經過運送與販售，最後由消費者使用。使用後是否妥善分類，會影響後續回收。"],
+  ["④ 回收：收集與分類", "使用後的寶特瓶依所在地回收規定交付回收。回收端會進行分類與檢查；實際回收方式及要求應以地方公告為準。"],
+  ["⑤ 再生：處理成再生材料", "回收後的 PET 瓶可能經過分選、去除異物、破碎、清洗及後續再製，成為再生 PET 片料或其他再生原料。實際流程依回收品質與工廠設備而異。"],
+  ["⑥ 再利用：製成新的產品", "再生 PET 可依品質與用途製成不同產品，例如聚酯纖維或其他塑膠製品。並非所有回收材料都一定能再製成食品接觸用瓶子。"]
+];
+
+document.querySelectorAll(".station").forEach(button => {
+  button.addEventListener("click", () => {
+    const index = Number(button.dataset.stage);
+    document.querySelectorAll(".station").forEach(item => item.setAttribute("aria-pressed", "false"));
+    button.setAttribute("aria-pressed", "true");
+    document.getElementById("detail-title").textContent = stageDetails[index][0];
+    document.getElementById("detail-text").textContent = stageDetails[index][1];
+    // 各站深入了解的網頁連結
+    const stageLinks = [
+         ["stage1.html", "深入了解 PET 原料 →"],
+         ["stage2.html", "深入了解 PET 製造 →"],
+         ["stage3.html", "深入了解 PET 使用 →"],
+         ["stage4.html", "深入了解 PET 回收 →"],
+         ["stage5.html", "深入了解 PET 再生 →"],
+         ["stage6.html", "深入了解 PET 再利用 →"]
+    ];
+
+    // 取得唯一的深入了解連結
+    const detailLink = document.getElementById("detail-link");
+
+    // 更新連結網址及顯示文字
+    detailLink.href = stageLinks[index][0];
+    detailLink.textContent = stageLinks[index][1];
+
+    // 尚未完成的第五、六站先隱藏 detailLink.hidden = false; 一樣效果
+ 
+    detailLink.hidden = index >= 6;
+
+
+
+
+    
+
+
+
+
+
+
+
+  });
+});
+</script>
+</body>
+</html>

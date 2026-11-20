@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第四站｜PET 產品回收</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:22px 15px 36px;font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;color:#263b35;background:#f4f8f5;line-height:1.75}
+header,main,footer{max-width:920px;margin:auto}
+header{text-align:center;margin-bottom:18px}
+.eyebrow{color:#398363;font-weight:700}
+h1{margin:4px 0 8px;color:#205c4a;font-size:clamp(26px,4vw,36px)}
+header p{margin:0;color:#586b64}
+nav{display:flex;justify-content:space-between;gap:10px;margin:0 0 18px}
+nav a{padding:8px 13px;border-radius:10px;background:#e3f0e7;color:#205c4a;text-decoration:none;font-weight:700}
+.hero{display:grid;grid-template-columns:1fr .9fr;gap:22px;align-items:center;padding:22px;background:white;border:1px solid #dce8e1;border-radius:18px}
+.hero h2,.section h2{color:#205c4a;margin:0 0 10px}
+.hero img{width:100%;max-height:230px;object-fit:contain;background:#f7faf7;border-radius:12px}
+.section{margin-top:17px;padding:19px 21px;background:white;border:1px solid #dce8e1;border-radius:16px}
+.section p{margin:8px 0}
+.cards,.process{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.card,.step{padding:14px;background:#f0f8f2;border-radius:12px}
+.card strong,.step b{display:block;color:#205c4a}
+.step{text-align:center;border:1px solid #cfe2d5}
+.symbol{font-size:30px}
+.callout{padding:12px 15px;margin-top:12px;background:#fff8df;border-left:5px solid #d6a62c;border-radius:9px}
+.quiz{padding:15px;background:#edf6ef;border:1px solid #cfe2d5;border-radius:14px}
+.quiz button{margin:5px;padding:8px 13px;border:1px solid #8ab79a;border-radius:9px;background:white;color:#205c4a;font:inherit;cursor:pointer}
+#answer{min-height:28px;font-weight:700;margin-top:7px}
+footer{text-align:center;margin-top:20px;color:#71817b;font-size:13px}
+@media(max-width:650px){body{padding:14px 10px 25px}.hero{grid-template-columns:1fr;padding:16px}.hero img{max-height:190px}.cards,.process{grid-template-columns:1fr}nav a{font-size:13px}}
+</style>
+
+</head>
+<body>
+<header>
+<div class="eyebrow">塑膠產品的循環旅程｜第四站</div>
+<h1>使用後的 PET 產品如何回收？</h1>
+<p><strong>從回收交付、收集到分類，讓可回收資源進入後續處理。</strong></p>
+</header>
+<main>
+<nav><a href="journey.html">← 返回六站循環圖</a><a href="journey.html">回到循環旅程總覽</a></nav>
+<section class="hero">
+<div>
+<h2>回收是資源循環的重要起點</h2>
+<p>PET 容器使用後，若符合所在地回收規定並妥善交付，便可能進入回收收集與分類流程。回收端會依材質、顏色、外觀及污染情形等條件進行辨識與分選，為後續再生處理做準備。</p>
+<div class="callout">回收不是把所有垃圾放在一起。<strong>正確分類、乾淨交付與依規定處理，</strong>有助於提升回收物料的品質。</div>
+</div>
+<img src="images/PET-RC2.png" alt="PET 寶特瓶回收分類情境" onerror="this.style.display='none';document.getElementById('img-missing').style.display='block'">
+<p id="img-missing" style="display:none;color:#8a5a24">找不到圖片，請確認 images/PET-RC2.png 路徑與檔名。</p>
+</section>
+<section class="section"><h2>1. 使用後先整理</h2><p>將容器內剩餘飲料或內容物倒空。若有明顯殘留，可依地方回收指引適度清理；避免讓液體或食物殘渣污染其他回收物。</p></section>
+<section class="section"><h2>2. 依規定分類交付</h2><p>依居住地或回收場所公告的方式，將 PET 容器交給清潔隊資源回收車、指定回收點或其他合法回收管道。瓶蓋、標籤及其他附件是否需要分開，應以當地最新規定為準。</p></section>
+<section class="section"><h2>3. 收集與運送</h2><p>回收物經收集後，會送往回收處理端。收集、壓縮、打包及運送方式會因地區與回收系統不同而有所差異。</p></section>
+<section class="section"><h2>4. 材質辨識與分選</h2><p>處理端會將回收物依材質及品質條件分選，盡可能把 PET 容器與其他材質分開，並去除不適合後續處理的異物。分類品質會影響再生材料的品質與用途。</p></section>
+<section class="section">
+<h2>本階段流程簡圖</h2>
+<div class="process"><div class="step"><div class="symbol">🧴</div><b>回收交付</b><small>倒空並依規定分類</small></div>
+<div class="step"><div class="symbol">🚛</div><b>收集運送</b><small>送往回收處理端</small></div>
+<div class="step"><div class="symbol">♻️</div><b>辨識分選</b><small>挑出適合的 PET 物料</small></div></div>
+<div class="callout">各縣市、回收據點及不同產品的回收要求可能不同。<strong>瓶蓋、標籤與容器的處理方式，請以所在地政府或回收單位公告為準。</strong></div>
+</section>
+<section class="section">
+<h2>這一站的重點</h2>
+<p><strong>回收階段的重點是正確交付與分類；分類越清楚、污染越少，越有利於後續再生處理。</strong></p>
+</section>
+<section class="section">
+<h2>小小檢查看看</h2>
+<p>交付 PET 容器回收前，最重要的一個處理動作是什麼？</p>
+<div class="quiz">
+<button type="button" onclick="checkAnswer(true)">A. 倒空容器內剩餘內容物</button>
+<button type="button" onclick="checkAnswer(false)">B. 裝入清潔液</button>
+<button type="button" onclick="checkAnswer(false)">C. 再加入其他飲料</button>
+<div id="answer" aria-live="polite"></div>
+</div>
+</section>
+<nav style="margin-top:18px"><a href="journey.html">← 返回六站循環圖</a><a href="journey.html">完成本站</a></nav>
+</main>
+<footer>RCWR｜生活循環零廢棄教材｜第四站：PET 產品回收</footer>
+<script>
+function checkAnswer(correct){
+ const a=document.getElementById("answer");
+ a.textContent=correct?'答對了！先倒空內容物，並依所在地回收規定整理與交付。':'再想一想：減少內容物殘留與污染，有助於後續收集及分類。';
+ a.style.color=correct?"#176b45":"#9a5a16";
+}
+</script>
+</body>
+</html>
